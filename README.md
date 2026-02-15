@@ -20,11 +20,12 @@ The API supports full CRUD operations for managing tasks.
 
 
 **DynamoDB Table Configuration**
-Attribute	Type
-taskId	String (Primary Key)
+### Attribute	Type
+### taskId	String (Primary Key)
 
 **Table Name: Tasks**
-Example Item:
+### Example Item:
+```json
 {
   "taskId": "b1f7c123-uuid",
   "title": "Learn Serverless",
@@ -32,28 +33,37 @@ Example Item:
   "status": "PENDING",
   "createdAt": "2026-02-15T10:00:00"
 }
-
+```
 
 **API Endpoints**
-Base URL:
+
+**Base URL:**
 https://<api-id>.execute-api.<region>.amazonaws.com/<stage>
-Example:
+
+**Example:**
 https://abc123.execute-api.ap-south-1.amazonaws.com/dev
 
+---
+
+# 🔥 API Endpoints
+
+---
 
 ## 1️⃣ Create Task
 
-### POST /tasks
+### POST `/tasks`
 
-### Request Body
+### 📌 Request Body
 
 ```json
 {
   "title": "Learn Serverless",
   "description": "Deep dive"
 }
+```
 
-Response (201)
+### 📦 Response (201)
+
 ```json
 {
   "taskId": "generated-uuid",
@@ -62,11 +72,16 @@ Response (201)
   "status": "PENDING",
   "createdAt": "timestamp"
 }
+```
 
+---
 
-##2️ Get All Tasks
-### GET /tasks
-### Response (200)
+## 2️⃣ Get All Tasks
+
+### GET `/tasks`
+
+### 📦 Response (200)
+
 ```json
 [
   {
@@ -74,74 +89,125 @@ Response (201)
     "title": "Task 1",
     "description": "Desc",
     "status": "PENDING"
+  },
+  {
+    "taskId": "uuid2",
+    "title": "Task 2",
+    "description": "Another task",
+    "status": "COMPLETED"
   }
 ]
+```
+
 ---
 
-##3️ Get Single Task
-###GET /tasks/{id}
+## 3️⃣ Get Single Task
+
+### GET `/tasks/{id}`
+
 Example:
+
+```
 GET /tasks/1234-uuid
+```
 
+### 📦 Response (200)
 
-##4️ Update Task
-###PUT /tasks/{id}
-Request Body
+```json
+{
+  "taskId": "1234-uuid",
+  "title": "Learn Serverless",
+  "description": "Deep dive",
+  "status": "PENDING",
+  "createdAt": "timestamp"
+}
+```
+
+---
+
+## 4️⃣ Update Task
+
+### PUT `/tasks/{id}`
+
+### 📌 Request Body
+
 ```json
 {
   "title": "Learn Serverless",
   "description": "Deep dive",
   "status": "COMPLETED"
 }
-##Response
+```
+
+### 📦 Response (200)
+
 ```json
 {
   "message": "Task updated"
 }
-⚠ Note:
-status is a DynamoDB reserved keyword, so it must be mapped using ExpressionAttributeNames inside Lambda.
+```
 
+---
 
-##5️ Delete Task
-### DELETE /tasks/{id}
-Response
+## 5️⃣ Delete Task
+
+### DELETE `/tasks/{id}`
+
+### 📦 Response (200)
+
 ```json
 {
   "message": "Deleted"
 }
+```
 
+---
 
 **Lambda Function Overview**
+
 Main responsibilities:
-•	Parse HTTP method from API Gateway event
-•	Perform CRUD operations in DynamoDB
-•	Return structured JSON response
-•	Handle reserved keywords in UpdateExpression
+
+-	Parse HTTP method from API Gateway event
+-	Perform CRUD operations in DynamoDB
+-	Return structured JSON response
+-	Handle reserved keywords in UpdateExpression
 
 
 **IAM Requirements**
+
 Lambda Execution Role must have:
-Minimum Required Permissions:
-•	dynamodb:PutItem
-•	dynamodb:GetItem
-•	dynamodb:UpdateItem
-•	dynamodb:DeleteItem
-•	dynamodb:Scan
+
+##### Minimum Required Permissions:
+
+- dynamodb:PutItem
+- dynamodb:GetItem
+- dynamodb:UpdateItem
+- dynamodb:DeleteItem
+- dynamodb:Scan
+
 Or attach:
-AmazonDynamoDBFullAccess
+
+- AmazonDynamoDBFullAccess
 
 
 **API Gateway Stages**
+
 Recommended environments:
-•	dev
-•	test
-•	prod
-Example URLs:
-/dev/tasks
-/prod/tasks
 
+- dev
+- test
+- prod
 
-**Testing**
+**Example URLs:**
+
+- /dev/tasks
+- /prod/tasks
+
+---
+##Testing:
+
+You can test the API using **Postman**, curl, or any HTTP client.
+
 POST:
  
 <img width="975" height="754" alt="image" src="https://github.com/user-attachments/assets/3a2c72c7-4689-4d04-87c5-cfaba9a09a96" />
